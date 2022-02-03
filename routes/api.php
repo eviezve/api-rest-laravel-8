@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BookController;
+use App\Models\Book;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/index', [BookController::class, 'index'])->name('book.index');
+Route::get('/index/{id}', [BookController::class, 'show'])->name('book.show');
+
+Route::delete('/index/{id}', [BookController::class, 'destroy'])->name('book.delete');
