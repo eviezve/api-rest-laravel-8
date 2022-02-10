@@ -15,8 +15,12 @@ class BookController extends Controller
      */
     public function index()
     {
-        //Retrieve all data, books with authors
-        return Book::with('authors')->get();
+        $books = Book::all();
+
+        return response()->json([
+            'res' => true,
+            'data' => $books
+        ]);
 
     }
 

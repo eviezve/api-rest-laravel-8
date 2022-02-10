@@ -17,11 +17,11 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $author = Author::all();
+        $authors = Author::all();
 
         return response()->json([
             'res' => true,
-            'data' => $author
+            'data' => $authors
         ]);
     }
 
@@ -34,7 +34,7 @@ class AuthorController extends Controller
     public function store(StoreAuthorRequest $request)
     {
         $author = Author::create($request->all());
-        /* $author->books()->attach(4); */
+
         return response()->json([
             'res' => true,
             'msg' => 'Registro correcto.',
@@ -48,9 +48,9 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Author $author)
     {
-        $author = Author::find($id);
+        $author->books;
 
         return response()->json([
             'res' => true,
@@ -65,9 +65,9 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreAuthorRequest $request, $id)
+    public function update(StoreAuthorRequest $request, Author $author)
     {
-        Author::find($id)->update($request->all());
+        $author->update($request->all());
 
         return response()->json([
             'res' => true,
@@ -81,9 +81,9 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Author $author)
     {
-        Author::find($id)->delete();
+        $author->delete();
 
         return response()->json([
             'res' => true,
@@ -91,35 +91,22 @@ class AuthorController extends Controller
         ]);
     }
 
-    public function authorsWithBooks()
+    public function attach(Author $author, Book $book)
     {
-        $data = Author::with('books')->get();
-
-        return response()->json([
-            'res' => true,
-            'data' => $data
-        ]);
-    }
-
-    public function showWithBooks($id)
-    {
-        $author = Author::with('books')->find($id);
-
-        return response()->json([
-            'res' => true,
-            'data' => $author
-        ]);
-    }
-
-    public function setBooks($authorId, $bookId)
-    {
-        $author = Author::find($authorId);
-
-        $author->books()->attach($bookId);
+        $author->books()->attach($book);
 
         return response()->json([
             'res' => true,
             'msg' => 'OK'
+        ]);
+    }
+
+    public function search($search)
+    {
+        return response()->json([
+            'res' => true,
+            'msg' => 'It works',
+            'data' => $search
         ]);
     }
 }
