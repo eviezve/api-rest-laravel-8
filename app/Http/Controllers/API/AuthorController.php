@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAuthorRequest;
+use App\Http\Resources\AuthorResource;
 use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Http\Request;
@@ -17,12 +18,16 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::all();
+        /* $authors = Author::all();
 
         return response()->json([
             'res' => true,
             'data' => $authors
-        ]);
+        ]); */
+
+        return AuthorResource::collection(Author::all());
+
+        
     }
 
     /**
@@ -33,13 +38,15 @@ class AuthorController extends Controller
      */
     public function store(StoreAuthorRequest $request)
     {
-        $author = Author::create($request->all());
+        /* $author = Author::create($request->all());
 
         return response()->json([
             'res' => true,
             'msg' => 'Registro correcto.',
             'data' => $author
-        ]);
+        ]); */
+
+        return new AuthorResource(Author::create($request->all()));
     }
 
     /**
@@ -50,12 +57,14 @@ class AuthorController extends Controller
      */
     public function show(Author $author)
     {
-        $author->books;
+        /* $author->books;
 
         return response()->json([
             'res' => true,
             'author' => $author,
-        ]);
+        ]); */
+
+        return new AuthorResource($author);
     }
 
     /**
@@ -67,12 +76,16 @@ class AuthorController extends Controller
      */
     public function update(StoreAuthorRequest $request, Author $author)
     {
-        $author->update($request->all());
+        /* $author->update($request->all());
 
         return response()->json([
             'res' => true,
             'msg' => 'Registro actualizado correctamente.'
-        ]);
+        ]); */
+
+        $author->update($request->all());
+
+        return new AuthorResource($author);
     }
 
     /**
@@ -83,12 +96,16 @@ class AuthorController extends Controller
      */
     public function destroy(Author $author)
     {
-        $author->delete();
+        /* $author->delete();
 
         return response()->json([
             'res' => true,
             'msg' => 'Registro elminiado correctamente'
-        ]);
+        ]); */
+
+        $author->delete();
+
+        return new AuthorResource($author);
     }
 
     public function attach(Author $author, Book $book)
